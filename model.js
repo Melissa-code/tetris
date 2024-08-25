@@ -142,10 +142,18 @@ class PlateauJeu {
     for (let i = 0; i < hauteur; i++) {
       let rowTas = [];
       for (let j = 0; j < largeur; j++) {
-        rowTas.push(couleurs[BLACK]);
+        rowTas.push(couleurs['BLACK']);
       }
       this.tas.push(rowTas);
     }
+
+    // constructor(forme, couleur, x, y) {
+    let fabrique = new Fabrique();
+    let bloc = new Bloc(fabrique.randomForm(), couleurs['YELLOW'], 0, 0);
+    this.placerBlocDansTas(bloc);
+
+    this.tas[5][6] = couleurs['RED'];
+    this.tas[1][6] = couleurs['YELLOW'];
   }
 
   /**

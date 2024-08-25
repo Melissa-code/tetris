@@ -12,12 +12,28 @@
             <h1>TETRIS</h1>
         </div>
         <div id="game">
+            <canvas id="myCanvas" width="400" height="400" style="border:1px solid #000000;">
+
+            </canvas>
             <div id="grid"></div>
         </div>
     </div>
 
 
     <script src="model.js"></script>
+    <script src="vue.js"></script>
+
+
+    <script>
+        var c = document.getElementById("myCanvas");
+      
+        let plateauJeu = new PlateauJeu(10, 20);
+        let vue = new Vue(plateauJeu, c, 30);
+
+        
+
+
+    </script>
 
     <script>
 
