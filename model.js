@@ -11,6 +11,7 @@ const couleurs = {
 
 
 class Bloc {
+
   constructor(forme, couleur, x, y) {
     this.forme = forme;
     this.couleur = couleur;
@@ -18,6 +19,9 @@ class Bloc {
     this.y = y;
   }
 
+  /**
+   * Tourne le bloc dans le sens des aiguilles d'une montre 
+   */
   rotateClockWise() {
     // (i,j => j, nblignes-1-i    }
     let nblignes = this.forme.length;
@@ -34,9 +38,9 @@ class Bloc {
     this.forme = rotatedForm;
   }
 
-  //faire rotation d'autres blocs
-
-  // faire sens inverse
+   /**
+   * Tourne le bloc dans le sens inverse des aiguilles d'une montre 
+   */
   rotateReverseClockWise() {
     let nblignes = this.forme.length;
     let nbcolonnes = this.forme[0].length;
@@ -52,6 +56,7 @@ class Bloc {
     this.forme = rotatedForm;
   }
 }
+
 
 class Fabrique {
   nomFormes = ["L", "J", "T", "I", "N", "Z", "O"];
@@ -128,60 +133,41 @@ class Fabrique {
   }
 }
 
+
+/**
+ * grille du jeu, où les blocs tombent, se déplacent et se fixent dans un tas 
+ */
 class PlateauJeu {
-  /**
-   * Grille de jeu
-   * et grille de tas
-   */
 
   constructor(largeur, hauteur) {
     this.largeur = largeur;
     this.hauteur = hauteur;
     this.blocQuiTombent = null;
     this.tas = [];
+
+    //'BLACK' dans chaque case du tas (case vide)
     for (let i = 0; i < hauteur; i++) {
       let rowTas = [];
       for (let j = 0; j < largeur; j++) {
-        rowTas.push(couleurs['BLACK']);
+        rowTas.push(couleurs['BLACK']); // OU rowTas.push(couleurs.BLACK);
       }
       this.tas.push(rowTas);
     }
 
-    // constructor(forme, couleur, x, y) {
+    // Bloc constructor(forme, couleur, x, y) {}
+    // bloc aléatoire à placer dans le tas
     let fabrique = new Fabrique();
     let bloc = new Bloc(fabrique.randomForm(), couleurs['YELLOW'], 0, 0);
     this.placerBlocDansTas(bloc);
 
+    // blocs placés dans le tas
     this.tas[5][6] = couleurs['RED'];
-    this.tas[1][6] = couleurs['YELLOW'];
-  }
-
-  /**
-   * Crée la grille de jeu
-   **/
-  creerGrille() {
-    let grid = document.getElementById("grid");
-    let table = document.createElement("table");
-    table.classList.add("tetris-grid");
-
-    for (let i = 0; i < hauteur; i++) {
-      let row = document.createElement("tr");
-
-      for (let j = 0; j < largeur; j++) {
-        let cell = document.createElement("td");
-        cell.classList.add("cell");
-        cell.id = i + "-" + j;
-        cell.textContent = "";
-        row.append(cell);
-      }
-      table.append(row);
-    }
-    grid.append(table);
+    this.tas[1][6] = couleurs['PINK'];
   }
 
   /**
    * Vérifie si une ligne du tas est complète
-   * si oui la supprime
+   * si oui on la supprime
    **/
   verifierSiLigneTasComplete() {
     for (let i = 0; i < this.hauteur; i++) {
@@ -211,24 +197,11 @@ class PlateauJeu {
     }
   }
 
-  // Gestion du tas: vider les grilles complètes
-  // la forme tombe -> devient tas
-  // vérifier si une ligne est complète
-  /* 
-        8 8 8 8 8 ajout d'une ligne vide en haut quand ligne supprimée 
-        8 8 8 8 8
-        8 8 8 8 8
-        8 8 8 8 8
-        1 1 1 1 1 ligne complète à supprimer en gardant la hauteur
-        8 8 1 1 1 
-        1 1 8 1 8 ligne mixte
-    */
-
   placerBlocDansTas(bloc) {
-    // le met dans le tas
     for (let i = 0; i < bloc.forme.length; i++)
       for (let j = 0; j < bloc.forme[i].length; j++) {
         if (bloc.forme[i][j] == 1) {
+            // couleur dans le tas 
           this.tas[bloc.x + i][bloc.y + j] = bloc.couleur;
         }
       }
@@ -243,21 +216,34 @@ class PlateauJeu {
 
   }
 
+  /**
+   * Test si collision entre bloc et tas 
+   * return false (pas de collision)
+   */
   detecterCollision(bloc)
   {
-    // teste de debordement grille
+    // bloc largeur et hauteur  
     let bloc_l = bloc.forme[0].length;
-    let bloc_h = bloc.length;
+    let bloc_h = bloc.forme.length;
 
-    if (bloc.x<0 || bloc.y<0)
-        return true;
-    if ((bloc.y+bloc_h) >= this.hauteur || ((bloc.x+bloc_l)>= this.largeur))
-        return true;
+    // si bloc déborde à gauche et en haut puis droite et en bas 
+    if (bloc.x < 0 || bloc.y < 0) return true; 
+    if ((bloc.x + bloc_l) > this.largeur || (bloc.y + bloc_h) > this.hauteur) return true;
 
-    // DEV teste de collision avec le tas DEV
+    // Test de collision du bloc avec le tas
+    for (let i = 0; i < bloc.forme.length; i++) {
+      for (let j = 0; j < bloc.forme[i].length; j++) {
+          // bloc.y+i: position de ligne du bloc sur grille (check si elle existe dans grille)
+          if (bloc.forme[i][j] === 1 && this.tas[bloc.y + i] && this.tas[bloc.y + i][bloc.x + j] !== couleurs['BLACK']) {
+              return true;
+          }
+      }
+    }
 
+    return false; 
   }
-  // DEV faire un test en console du jeu 
+
+  // DEV: Faire un test en console du jeu (voir index.html)
 
 
   avancerBloc()
@@ -272,5 +258,7 @@ class PlateauJeu {
     // tester si le tas est au bout
   }
 }
+
+
 
 
