@@ -26,6 +26,7 @@
         let plateauJeu = new PlateauJeu(10, 20); //constructor(largeur, hauteur)
         let vue = new Vue(plateauJeu, c, 30); //constructor(plateauJeu, myCanva, tailleCarreau)
 
+  
 
         // TESTS DE COLLISION EN CONSOLE 
 
@@ -57,8 +58,8 @@
         collisionBlocRouge = plateauJeu.detecterCollision(blocCollisionBlocRouge);
         console.log(collisionBlocRouge == true ? "collision avec bloc rouge" : "Pas de collision !");
 
-         // Test collision sur bloc pink dans tas 
-        //  this.tas[1][6] = couleurs['PINK'];
+        // Test collision sur bloc pink dans tas 
+        // this.tas[1][6] = couleurs['PINK'];
         //blocCollisionBlocRose = new Bloc(fabrique.randomForm(), couleurs.YELLOW, 6, 1);
         blocCollisionBlocRose = new Bloc([[1, 1], [1, 1]], couleurs.YELLOW, 6, 0);
         collisionBlocRose = plateauJeu.detecterCollision(blocCollisionBlocRose);
@@ -70,6 +71,21 @@
         console.log(collisionZero == true ? "collision " : "Pas de collision !");
 
     
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'ArrowLeft') {
+                plateauJeu.jouerBloc('gauche');
+            } else if (event.key === 'ArrowRight') {
+                plateauJeu.jouerBloc('droite');
+            } else if (event.key === 'ArrowDown') {
+                plateauJeu.jouerBloc('bas');
+            } else if (event.key === 'ArrowUp') {
+                plateauJeu.jouerBloc('rotation');
+            }
+
+            console.log("test") ; 
+        });
+
+
     </script>
 </body>
 </html>

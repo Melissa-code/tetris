@@ -163,6 +163,7 @@ class PlateauJeu {
     // blocs placés dans le tas
     this.tas[5][6] = couleurs['RED'];
     this.tas[1][6] = couleurs['PINK'];
+
   }
 
   /**
@@ -207,15 +208,42 @@ class PlateauJeu {
       }
   }
 
-  jouerBloc(action)
+  jouerBloc(deplacementFleche)
   {
     // modifier la position et la forme du bloc selon l'action
     // dans la limite du correct
     // action : gauche, droite, bas, rotation , rotation inverse
+    let bloc = new Bloc(this.bloc.forme, this.bloc.couleur, this.bloc.x, this.bloc.y);
+    console.log(bloc)
+    
+    switch (deplacementFleche) {
+      case 'gauche':
+        bloc.x -= 1; // gauche
+        break;
+      case 'droite':
+        bloc.x += 1; // droite
+        break;
+      case 'haut':
+        bloc.y -= 1; // haut
+        break;
+      case 'bas':
+        bloc.y += 1; // bas
+        break;
+      case 'rotation':
+        bloc.rotateClockWise(); 
+        break;
+      case 'rotationInverse':
+        bloc.rotateReverseClockWise(); 
+        break;
+      default:
+        console.log("Action inconnue");
+        return;
+    }
 
-
+    //tester si collision 
   }
 
+ 
   /**
    * Test si collision entre bloc et tas 
    * return false (pas de collision)
