@@ -150,6 +150,7 @@ class PlateauJeu {
     this.vitesse = 1000;
     this.finJeu = false; 
     this.score = 0;
+    this.isPaused = false;
 
     //'BLACK' dans chaque case du tas (case vide)
     for (let i = 0; i < hauteur; i++) {
@@ -304,7 +305,7 @@ class PlateauJeu {
   avancerBloc() {
     // avance le bloc et detecte une collision de tas
     //console.log(this);
-    if(this.finJeu == true) return;
+    if(this.finJeu || this.isPaused) return;
 
     if (this.deplacerBloc('bas') == false) {
       this.placerBlocDansTas(this.blocQuiTombent);
@@ -329,7 +330,7 @@ class PlateauJeu {
     // supprimer la ligne quand elle est complete
 
 
-    //setTimeout(()=>this.avancerBloc(), this.vitesse);
+    setTimeout(()=>this.avancerBloc(), this.vitesse);
     // c'est lui qui fait appel a placerBlocDansTas
     
   }
@@ -338,6 +339,15 @@ class PlateauJeu {
     this.finJeu = true;
     alert('Vous avez perdu.');
   }
+
+  pauseJeu() {
+    this.isPaused = true; 
+  }
+
+  reprendreJeu() {
+    this.isPaused = false; 
+    this.avancerBloc(); 
+}
 
   // faire score OK
   // score pondéré : on ajoute un score + augmente largeur (+que 2fois la largeur)
@@ -355,7 +365,6 @@ class PlateauJeu {
     console.log("Score: ", this.score);
     
     this.updateScoreDisplay(); 
-
   }
 
   /**

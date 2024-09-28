@@ -10,10 +10,12 @@ class Vue {
         this.height = this.plateauJeu.hauteur * tailleCarreau;
         this.myCanva.width = this.width; 
         this.myCanva.height = this.height; 
-        //this.scoreElement = document.getElementById("score"); 
 
         this.initControl(document);
         this.refresh();
+                
+        //this.scoreElement = document.getElementById("score"); 
+        this.initPauseButton(document);
     }
 
     initControl(document)
@@ -74,9 +76,27 @@ class Vue {
               if (bloc.forme[i][j] == 1) {
                 this.ctx.fillStyle = bloc.couleur; 
                 this.ctx.fillRect((j+bloc.y) * this.tailleCarreau +1, (i+bloc.x) * this.tailleCarreau +1, this.tailleCarreau -2, this.tailleCarreau -2); 
-
               }
             }
+    }
+
+    /**
+     * Mettre en pause le jeu 
+     * ou le relancer
+     */
+    initPauseButton(document) {
+
+        const pauseButton = document.getElementById("pauseButton");
+
+        pauseButton.addEventListener('click', () => {
+            if (this.plateauJeu.isPaused) {
+                this.plateauJeu.reprendreJeu(); 
+                pauseButton.textContent = 'Pause'; 
+            } else {
+                this.plateauJeu.pauseJeu(); 
+                pauseButton.textContent = 'Reprendre'; 
+            }
+        });
     }
 
     // updateScore() {
