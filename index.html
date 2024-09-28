@@ -21,13 +21,13 @@
     <script src="vue.js"></script>
 
     <script>
-        var c = document.getElementById("myCanvas");
+        
       
         let plateauJeu = new PlateauJeu(10, 20); //constructor(largeur, hauteur)
-        let vue = new Vue(plateauJeu, c, 30); //constructor(plateauJeu, myCanva, tailleCarreau)
+        let vue = new Vue(plateauJeu, document, 30); //constructor(plateauJeu, myCanva, tailleCarreau)
 
   
-
+/*
         // TESTS DE COLLISION EN CONSOLE 
 
         // Test collision: bloc sort à gauche 
@@ -70,20 +70,8 @@
         collisionZero = plateauJeu.detecterCollision(blocCollisionZero);
         console.log(collisionZero == true ? "collision " : "Pas de collision !");
 
-    
-        document.addEventListener('keydown', function(event) {
-            if (event.key === 'ArrowLeft') {
-                plateauJeu.jouerBloc('gauche');
-            } else if (event.key === 'ArrowRight') {
-                plateauJeu.jouerBloc('droite');
-            } else if (event.key === 'ArrowDown') {
-                plateauJeu.jouerBloc('bas');
-            } else if (event.key === 'ArrowUp') {
-                plateauJeu.jouerBloc('rotation');
-            }
+    */
 
-            console.log("test") ; 
-        });
 
 
     </script>

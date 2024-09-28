@@ -8,10 +8,7 @@ const couleurs = {
   BLACK: "black",
 };
 
-
-
 class Bloc {
-
   constructor(forme, couleur, x, y) {
     this.forme = forme;
     this.couleur = couleur;
@@ -20,7 +17,16 @@ class Bloc {
   }
 
   /**
-   * Tourne le bloc dans le sens des aiguilles d'une montre 
+   * clone bloc
+   */
+  clone() {
+    let cloneForm = JSON.parse(JSON.stringify(this.forme));
+    let cloneBloc = new Bloc(cloneForm, this.couleur, this.x, this.y);
+    return cloneBloc;
+  }
+
+  /**
+   * Tourne le bloc dans le sens des aiguilles d'une montre
    */
   rotateClockWise() {
     // (i,j => j, nblignes-1-i    }
@@ -38,8 +44,8 @@ class Bloc {
     this.forme = rotatedForm;
   }
 
-   /**
-   * Tourne le bloc dans le sens inverse des aiguilles d'une montre 
+  /**
+   * Tourne le bloc dans le sens inverse des aiguilles d'une montre
    */
   rotateReverseClockWise() {
     let nblignes = this.forme.length;
@@ -56,7 +62,6 @@ class Bloc {
     this.forme = rotatedForm;
   }
 }
-
 
 class Fabrique {
   nomFormes = ["L", "J", "T", "I", "N", "Z", "O"];
@@ -133,37 +138,42 @@ class Fabrique {
   }
 }
 
-
 /**
- * grille du jeu, où les blocs tombent, se déplacent et se fixent dans un tas 
+ * grille du jeu, où les blocs tombent, se déplacent et se fixent dans un tas
  */
 class PlateauJeu {
-
   constructor(largeur, hauteur) {
     this.largeur = largeur;
     this.hauteur = hauteur;
     this.blocQuiTombent = null;
     this.tas = [];
+    this.vitesse = 1000;
+    this.finJeu = false; 
 
     //'BLACK' dans chaque case du tas (case vide)
     for (let i = 0; i < hauteur; i++) {
       let rowTas = [];
       for (let j = 0; j < largeur; j++) {
-        rowTas.push(couleurs['BLACK']); // OU rowTas.push(couleurs.BLACK);
+        rowTas.push(couleurs["BLACK"]); // OU rowTas.push(couleurs.BLACK);
       }
       this.tas.push(rowTas);
     }
+    console.table(this.tas);
+    const couleursTab = Object.values(couleurs); 
+    const couleurAleatoire = couleursTab[Math.floor(Math.random() * (couleursTab.length-1))];
 
     // Bloc constructor(forme, couleur, x, y) {}
     // bloc aléatoire à placer dans le tas
-    let fabrique = new Fabrique();
-    let bloc = new Bloc(fabrique.randomForm(), couleurs['YELLOW'], 0, 0);
-    this.placerBlocDansTas(bloc);
+    this.fabrique = new Fabrique();
+    this.blocQuiTombent = new Bloc(
+      this.fabrique.randomForm(),
+      ///couleurs["YELLOW"],
+      couleurAleatoire,
+      0,
+      0
+    );
 
-    // blocs placés dans le tas
-    this.tas[5][6] = couleurs['RED'];
-    this.tas[1][6] = couleurs['PINK'];
-
+    setTimeout(()=>this.avancerBloc(), this.vitesse);
   }
 
   /**
@@ -171,122 +181,174 @@ class PlateauJeu {
    * si oui on la supprime
    **/
   verifierSiLigneTasComplete() {
+    let ligneComplete;
+    let nbLignesSupprimees = 0; 
+
     for (let i = 0; i < this.hauteur; i++) {
       // marqueur
-      let ligneComplete = true;
-
+      ligneComplete = true;
+    
       for (let j = 0; j < this.largeur; j++) {
-        if (this.tas[i][j] == couleurs[BLACK]) {
+        if (this.tas[i][j] == couleurs['BLACK']) {
           ligneComplete = false;
           break;
         }
       }
 
       // Supprime la ligne si true
-      if ((ligneComplete = true)) {
+      if ((ligneComplete == true)) {
+        console.log('ligne  complete:');
         // supprime 1 element du tableau (sur la ligne)
+        nbLignesSupprimees++;
         this.tas.slice(i, 1);
 
         // Crée une ligne (un tableau)
-        let nouvelleLigne = [];
+        let ligneComplete = [];
         for (let k = 0; k < this.largeur; k++) {
-          nouvelleLigne.push(0);
+          ligneComplete.push(couleurs['BLACK']);
         }
         // Ajoute une ligne au debut du tableau (haut de la ligne)
-        this.tas.unshift(nouvelleLigne);
+        this.tas.unshift(ligneComplete);
       }
     }
+
+    return nbLignesSupprimees; 
+
   }
 
   placerBlocDansTas(bloc) {
     for (let i = 0; i < bloc.forme.length; i++)
       for (let j = 0; j < bloc.forme[i].length; j++) {
         if (bloc.forme[i][j] == 1) {
-            // couleur dans le tas 
+          // couleur dans le tas
           this.tas[bloc.x + i][bloc.y + j] = bloc.couleur;
         }
       }
   }
 
-  jouerBloc(deplacementFleche)
-  {
+  deplacerBloc(deplacementFleche) {
     // modifier la position et la forme du bloc selon l'action
     // dans la limite du correct
-    // action : gauche, droite, bas, rotation , rotation inverse
-    let bloc = new Bloc(this.bloc.forme, this.bloc.couleur, this.bloc.x, this.bloc.y);
-    console.log(bloc)
-    
+    // action : gauche, droite, bas, rotation, rotation inverse
+
+    // faire notre propre fonction de clonage (pour avoir les methodes en clone)
+    let bloc = this.blocQuiTombent.clone();
+    //console.log(bloc);
+
     switch (deplacementFleche) {
-      case 'gauche':
-        bloc.x -= 1; // gauche
+      case "gauche":
+        bloc.y -= 1; // gauche
         break;
-      case 'droite':
-        bloc.x += 1; // droite
+      case "droite":
+        bloc.y += 1; // droite
         break;
-      case 'haut':
-        bloc.y -= 1; // haut
+      case "haut":
+        bloc.x -= 1; // haut
         break;
-      case 'bas':
-        bloc.y += 1; // bas
+      case "bas":
+        bloc.x += 1; // bas
         break;
-      case 'rotation':
-        bloc.rotateClockWise(); 
+      case "rotation":
+        bloc.rotateClockWise();
         break;
-      case 'rotationInverse':
-        bloc.rotateReverseClockWise(); 
+      case "rotationInverse":
+        bloc.rotateReverseClockWise();
         break;
       default:
         console.log("Action inconnue");
-        return;
+        return false;
     }
 
-    //tester si collision 
+    if (!this.detecterCollision(bloc)) {
+      this.blocQuiTombent = bloc.clone();
+      return true;
+      //tester si collision
+    } else {
+      console.log("Il y a collision !");
+      return false;
+    }
   }
 
- 
   /**
-   * Test si collision entre bloc et tas 
+   * Test si collision entre bloc et tas
    * return false (pas de collision)
    */
-  detecterCollision(bloc)
-  {
-    // bloc largeur et hauteur  
-    let bloc_l = bloc.forme[0].length;
-    let bloc_h = bloc.forme.length;
+  detecterCollision(bloc) {
+    // bloc largeur et hauteur
+    let bloc_h = bloc.forme[0].length;
+    let bloc_l = bloc.forme.length;
 
-    // si bloc déborde à gauche et en haut puis droite et en bas 
-    if (bloc.x < 0 || bloc.y < 0) return true; 
-    if ((bloc.x + bloc_l) > this.largeur || (bloc.y + bloc_h) > this.hauteur) return true;
+    // si bloc déborde à gauche et en haut puis droite et en bas
+    if (bloc.x < 0 || bloc.y < 0) return true;
+    if (bloc.x + bloc_l > this.hauteur || bloc.y + bloc_h > this.largeur)
+      return true;
 
-    // Test de collision du bloc avec le tas
-    for (let i = 0; i < bloc.forme.length; i++) {
+    // Test de collision du bloc avec le tas // DEV
+    for (let i = 0; i < bloc_l; i++) {
       for (let j = 0; j < bloc.forme[i].length; j++) {
-          // bloc.y+i: position de ligne du bloc sur grille (check si elle existe dans grille)
-          if (bloc.forme[i][j] === 1 && this.tas[bloc.y + i] && this.tas[bloc.y + i][bloc.x + j] !== couleurs['BLACK']) {
-              return true;
-          }
+        // bloc.y+i: position de ligne du bloc sur grille (check si elle existe dans grille)
+        //if (bloc.forme[i][j] === 1) console.log(i,j,bloc.x + '+'+ i,bloc.y +'+'+ j)
+        if (
+          bloc.forme[i][j] === 1 &&
+          this.tas[bloc.x + i][bloc.y + j] !== couleurs["BLACK"]
+        ) {
+          return true;
+        }
       }
     }
 
-    return false; 
+    return false;
   }
 
-  // DEV: Faire un test en console du jeu (voir index.html)
-
-
-  avancerBloc()
-  {
+  avancerBloc() {
     // avance le bloc et detecte une collision de tas
+    //console.log(this);
+    if(this.finJeu == true) return;
 
+    if (this.deplacerBloc('bas') == false) {
+      this.placerBlocDansTas(this.blocQuiTombent);
+
+      const couleursTab = Object.values(couleurs); 
+      const couleurAleatoire = couleursTab[Math.floor(Math.random() * (couleursTab.length-1))];
+
+      this.blocQuiTombent = new Bloc(
+        this.fabrique.randomForm(),
+        couleurAleatoire, 
+        0,
+        0
+      );
+
+      if (this.detecterCollision(this.blocQuiTombent)) {
+        this.finDuJeu(); 
+      }
+    }
+    
+    let nbLignesSupprimees=this.verifierSiLigneTasComplete()
+    this.majScore(nbLignesSupprimees);
+    // supprimer la ligne quand elle est complete
+
+
+    //setTimeout(()=>this.avancerBloc(), this.vitesse);
     // c'est lui qui fait appel a placerBlocDansTas
-
+    
   }
 
   finDuJeu() {
-    // tester si le tas est au bout
+    this.finJeu = true;
+    alert('Vous avez perdu.');
+  }
+
+  // faire score
+  // score pondéré : on ajoute un score + augmente largeur (+que 2fois la largeur)
+  // afficher le bloc a venir à l'avance
+  // ajouter deux bouton, pause et redemarrage
+
+  majScore(nbLignesSupprimees) {
+    if (nbLignesSupprimees == 1) {
+      //score =
+    }
+    // compter lignes supprimees 
+    //nbLignesSupprimees
+    // 
   }
 }
-
-
-
-
