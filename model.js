@@ -77,6 +77,11 @@ class Fabrique {
     return this.fabriquer(nomFormeRandom);
   }
 
+  getMaxBlocWidth()
+  {
+    return 4;
+  }
+
   /**
    * Crée la forme (7 formes possibles)
    */
@@ -151,6 +156,7 @@ class PlateauJeu {
     this.finJeu = false; 
     this.score = 0;
     this.isPaused = false;
+    this.blocEnRoute = null; 
 
     //'BLACK' dans chaque case du tas (case vide)
     for (let i = 0; i < hauteur; i++) {
@@ -174,8 +180,21 @@ class PlateauJeu {
       0,
       0
     );
+    
+    //bloc qui va tomber 
+    this.blocEnRoute = new Bloc(
+      this.fabrique.randomForm(),
+      couleurAleatoire,
+      0,
+      0
+    );
 
     setTimeout(()=>this.avancerBloc(), this.vitesse);
+  }
+
+  getMaxBlocWidth()
+  {
+    return this.fabrique.getMaxBlocWidth();
   }
 
   /**
@@ -313,7 +332,8 @@ class PlateauJeu {
       const couleursTab = Object.values(couleurs); 
       const couleurAleatoire = couleursTab[Math.floor(Math.random() * (couleursTab.length-1))];
 
-      this.blocQuiTombent = new Bloc(
+      this.blocQuiTombent = this.blocEnRoute;
+      this.blocEnRoute = new Bloc(
         this.fabrique.randomForm(),
         couleurAleatoire, 
         0,
@@ -326,8 +346,11 @@ class PlateauJeu {
     }
     
     let nbLignesSupprimees=this.verifierSiLigneTasComplete()
-    this.majScore(nbLignesSupprimees);
+    if (nbLignesSupprimees>0)
+      this.majScore(nbLignesSupprimees);
     // supprimer la ligne quand elle est complete
+
+    this.vitesse = 1000 - (this.score/500)*200;
 
 
     setTimeout(()=>this.avancerBloc(), this.vitesse);
@@ -378,40 +401,36 @@ rejouer() {
     0
   );
 
-  this.updateScoreDisplay(); 
+  //this.updateScoreDisplay(); 
   setTimeout(() => this.avancerBloc(), this.vitesse); 
 }
 
-
-  // faire score OK
+// 100 : 1 ligne 2: 220 et 3: 360 
   // score pondéré : on ajoute un score + augmente largeur (+que 2fois la largeur)
   // afficher le bloc a venir à l'avance
-  // ajouter deux bouton, pause et redemarrage OK
+
 
   /**
    * Calcule le score 
    */
   majScore(nbLignesSupprimees) {
 
-    const pointsParLigne = 100;
+    let pointsParLigne = 0;
+    switch(nbLignesSupprimees)
+    {
+      case 1: pointsParLigne=100;
+      break;
+      case 2: pointsParLigne=110;
+      break;
+      default: pointsParLigne=120;
 
+    }
+    
     this.score += nbLignesSupprimees * pointsParLigne;
     console.log("Score: ", this.score);
+
     
-    this.updateScoreDisplay(); 
+    //this.updateScoreDisplay(); 
   }
-
-  /**
-   * Update the score in the view
-   */
-  updateScoreDisplay() {
-
-    const scoreElement = document.getElementById("score");
-
-    if (scoreElement) {
-        scoreElement.textContent = `Score: ${this.score}`;
-    }
-  }
-
 
 }

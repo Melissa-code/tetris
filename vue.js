@@ -8,13 +8,14 @@ class Vue {
 
         this.width = this.plateauJeu.largeur * tailleCarreau;
         this.height = this.plateauJeu.hauteur * tailleCarreau;
-        this.myCanva.width = this.width; 
+        this.myCanva.width = this.width + (this.plateauJeu.getMaxBlocWidth()*tailleCarreau); 
         this.myCanva.height = this.height; 
 
         this.initControl(document);
         this.refresh();
                 
-        //this.scoreElement = document.getElementById("score"); 
+        this.scoreElement = document.getElementById("score"); 
+
         this.initPauseButton(document);
         this.initRestartButton(document); 
     }
@@ -41,10 +42,14 @@ class Vue {
         this.displayGrid();
         this.displayTas();
         this.displayBloquesTombe();
+        this.displayBloqueEnRoute();
+        this.updateScore();
         setTimeout(()=>this.refresh(), 200);
     }
 
     displayGrid() {
+        this.ctx.fillStyle = 'white';
+        this.ctx.fillRect(0, 0, this.myCanva.width, this.myCanva.height);
         this.ctx.fillStyle = 'black';
         this.ctx.fillRect(0, 0, this.width, this.height);
         this.ctx.strokeStyle = '#555555';
@@ -81,6 +86,18 @@ class Vue {
             }
     }
 
+    displayBloqueEnRoute()
+    {
+        let bloc = this.plateauJeu.blocEnRoute;
+        for (let i = 0; i < bloc.forme.length; i++)
+            for (let j = 0; j < bloc.forme[i].length; j++) {
+              if (bloc.forme[i][j] == 1) {
+                this.ctx.fillStyle = bloc.couleur; 
+                this.ctx.fillRect((j+bloc.y+this.plateauJeu.largeur) * this.tailleCarreau +1, (i+bloc.x) * this.tailleCarreau +1, this.tailleCarreau -2, this.tailleCarreau -2); 
+              }
+            }
+    }
+
     /**
      * Mettre en pause le jeu 
      * ou le relancer
@@ -112,9 +129,9 @@ class Vue {
         });
     }
 
-    // updateScore() {
-    //     if (this.scoreElement) {
-    //         this.scoreElement.textContent = `Score: ${this.plateauJeu.score || 0}`;
-    //     }
-    // }
+    updateScore() {
+        if (this.scoreElement) {
+            this.scoreElement.textContent = `Score: ${this.plateauJeu.score || 0}`;
+        }
+    }
 }
