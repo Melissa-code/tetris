@@ -16,6 +16,7 @@ class Vue {
                 
         //this.scoreElement = document.getElementById("score"); 
         this.initPauseButton(document);
+        this.initRestartButton(document); 
     }
 
     initControl(document)
@@ -96,6 +97,18 @@ class Vue {
                 this.plateauJeu.pauseJeu(); 
                 pauseButton.textContent = 'Reprendre'; 
             }
+        });
+    }
+
+    /**
+     * Rejouer  
+     */
+    initRestartButton(document) {
+
+        const restartButton = document.getElementById("restartButton");
+
+        restartButton.addEventListener('click', () => {
+            this.plateauJeu.rejouer(); 
         });
     }
 

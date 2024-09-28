@@ -349,10 +349,44 @@ class PlateauJeu {
     this.avancerBloc(); 
 }
 
+
+/**
+ * Rejouer 
+ */
+rejouer() {
+  this.finJeu = false; 
+  this.score = 0;             
+  this.tas = [];              
+  
+  // Recrée le tas 
+  for (let i = 0; i < this.hauteur; i++) {
+    let rowTas = [];
+    for (let j = 0; j < this.largeur; j++) {
+      rowTas.push(couleurs["BLACK"]); // Cases vides
+    }
+    this.tas.push(rowTas);
+  }
+
+  const couleursTab = Object.values(couleurs); 
+  const couleurAleatoire = couleursTab[Math.floor(Math.random() * couleursTab.length)];
+
+  this.fabrique = new Fabrique();  
+  this.blocQuiTombent = new Bloc(
+    this.fabrique.randomForm(),
+    couleurAleatoire,
+    0,
+    0
+  );
+
+  this.updateScoreDisplay(); 
+  setTimeout(() => this.avancerBloc(), this.vitesse); 
+}
+
+
   // faire score OK
   // score pondéré : on ajoute un score + augmente largeur (+que 2fois la largeur)
   // afficher le bloc a venir à l'avance
-  // ajouter deux bouton, pause et redemarrage
+  // ajouter deux bouton, pause et redemarrage OK
 
   /**
    * Calcule le score 
