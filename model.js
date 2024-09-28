@@ -149,6 +149,7 @@ class PlateauJeu {
     this.tas = [];
     this.vitesse = 1000;
     this.finJeu = false; 
+    this.score = 0;
 
     //'BLACK' dans chaque case du tas (case vide)
     for (let i = 0; i < hauteur; i++) {
@@ -338,17 +339,36 @@ class PlateauJeu {
     alert('Vous avez perdu.');
   }
 
-  // faire score
+  // faire score OK
   // score pondéré : on ajoute un score + augmente largeur (+que 2fois la largeur)
   // afficher le bloc a venir à l'avance
   // ajouter deux bouton, pause et redemarrage
 
+  /**
+   * Calcule le score 
+   */
   majScore(nbLignesSupprimees) {
-    if (nbLignesSupprimees == 1) {
-      //score =
-    }
-    // compter lignes supprimees 
-    //nbLignesSupprimees
-    // 
+
+    const pointsParLigne = 100;
+
+    this.score += nbLignesSupprimees * pointsParLigne;
+    console.log("Score: ", this.score);
+    
+    this.updateScoreDisplay(); 
+
   }
+
+  /**
+   * Update the score in the view
+   */
+  updateScoreDisplay() {
+
+    const scoreElement = document.getElementById("score");
+
+    if (scoreElement) {
+        scoreElement.textContent = `Score: ${this.score}`;
+    }
+  }
+
+
 }

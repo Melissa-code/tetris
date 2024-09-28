@@ -10,9 +10,10 @@ class Vue {
         this.height = this.plateauJeu.hauteur * tailleCarreau;
         this.myCanva.width = this.width; 
         this.myCanva.height = this.height; 
+        //this.scoreElement = document.getElementById("score"); 
+
         this.initControl(document);
         this.refresh();
-
     }
 
     initControl(document)
@@ -77,4 +78,10 @@ class Vue {
               }
             }
     }
+
+    // updateScore() {
+    //     if (this.scoreElement) {
+    //         this.scoreElement.textContent = `Score: ${this.plateauJeu.score || 0}`;
+    //     }
+    // }
 }
