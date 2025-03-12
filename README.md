@@ -2,7 +2,13 @@
 
 - Tetris est un jeu vidéo qui a été créé en 1984.
 
-- Jouer au jeu : [Tetris](https://jeu-tetris.netlify.app/)
+- Jouer au jeu : [Tetris](https://jeu-tetris.netlify.app/). 
+
+- Ce jeu a été codé en JavaScript. Il convient de jouer avec les flèches du clavier de l'ordinateur. 
+
+<img src="tetris.png" style="width: 300px;" /> 
+
+---- 
 
 
 ## Objectif du jeu 
