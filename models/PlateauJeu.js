@@ -1,150 +1,9 @@
-const couleurs = {
-  RED: "#ff206e",
-  YELLOW: "#fbff12",
-  CYAN: "#41ead4",
-  GRAY: "#e0fbfc",
-  BLACK: "#0c0f0a",
-};
+import Fabrique from './Fabrique.js';
+import Bloc from './Bloc.js';
+import couleurs from './couleurs.js';
 
-class Bloc {
-  constructor(forme, couleur, x, y) {
-    this.forme = forme;
-    this.couleur = couleur;
-    this.x = x;
-    this.y = y;
-  }
-
-  /**
-   * clone bloc
-   */
-  clone() {
-    let cloneForm = JSON.parse(JSON.stringify(this.forme));
-    let cloneBloc = new Bloc(cloneForm, this.couleur, this.x, this.y);
-    return cloneBloc;
-  }
-
-  /**
-   * Tourne le bloc dans le sens des aiguilles d'une montre
-   */
-  rotateClockWise() {
-    // (i,j => j, nblignes-1-i    }
-    let nblignes = this.forme.length;
-    let nbcolonnes = this.forme[0].length;
-    let rotatedForm = [];
-
-    for (let i = 0; i < nbcolonnes; i++) {
-      let ligne = [];
-      for (let j = 0; j < nblignes; j++) {
-        ligne.push(this.forme[nblignes - 1 - j][i]);
-      }
-      rotatedForm.push(ligne);
-    }
-    this.forme = rotatedForm;
-  }
-
-  /**
-   * Tourne le bloc dans le sens inverse des aiguilles d'une montre
-   */
-  rotateReverseClockWise() {
-    let nblignes = this.forme.length;
-    let nbcolonnes = this.forme[0].length;
-    let rotatedForm = [];
-
-    for (let i = 0; i < nbcolonnes; i++) {
-      let ligne = [];
-      for (let j = 0; j < nblignes; j++) {
-        ligne.push(this.forme[j][nbcolonnes - 1 - i]);
-      }
-      rotatedForm.push(ligne);
-    }
-    this.forme = rotatedForm;
-  }
-}
-
-class Fabrique {
-  nomFormes = ["L", "J", "T", "I", "N", "Z", "O"];
-
-  /**
-   * Prend le nom de la forme aléatoirement depuis nomFormes[]
-   */
-  randomForm() {
-    // 0.99999999999999 => ]0,1[ * N => 0..N
-    let indiceRandomForme = Math.floor(Math.random() * this.nomFormes.length);
-    let nomFormeRandom = this.nomFormes[indiceRandomForme];
-
-    return this.fabriquer(nomFormeRandom);
-  }
-
-  getMaxBlocWidth()
-  {
-    return 4;
-  }
-
-  /**
-   * Crée la forme (7 formes possibles)
-   */
-  fabriquer(nomForme) {
-    if (!this.nomFormes.includes(nomForme)) {
-      throw new Error("Forme inconnue");
-    }
-
-    let f = [];
-
-    switch (nomForme) {
-      case "L":
-        f = [
-          [1, 0],
-          [1, 0],
-          [1, 1],
-        ];
-        break;
-      case "J":
-        f = [
-          [0, 1],
-          [0, 1],
-          [1, 1],
-        ];
-        break;
-      case "T":
-        f = [
-          [1, 1, 1],
-          [0, 1, 0],
-        ];
-        break;
-      case "I":
-        f = [[1], [1], [1], [1]];
-        break;
-      case "N":
-        f = [
-          [1, 0],
-          [1, 1],
-          [0, 1],
-        ];
-        break;
-      case "Z":
-        f = [
-          [0, 1],
-          [1, 1],
-          [1, 0],
-        ];
-        break;
-      case "O":
-        f = [
-          [1, 1],
-          [1, 1],
-        ];
-        break;
-      default:
-        console.log("Erreur: forme ", nomForme, " inconnue.");
-    }
-    return f;
-  }
-}
-
-/**
- * grille du jeu, où les blocs tombent, se déplacent et se fixent dans un tas
- */
 class PlateauJeu {
+  
   constructor(largeur, hauteur) {
     this.largeur = largeur;
     this.hauteur = hauteur;
@@ -407,6 +266,7 @@ class PlateauJeu {
     }
     
     this.score += nbLignesSupprimees * pointsParLigne;
-    //console.log("Score: ", this.score);
   }
 }
+
+export default PlateauJeu;

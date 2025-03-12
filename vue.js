@@ -117,5 +117,7 @@ class Vue {
         if (this.scoreElement) {
             this.scoreElement.textContent = `Score: ${this.plateauJeu.score || 0}`;
         }
-    }
+    } 
 }
+
+export default Vue;
