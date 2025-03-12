@@ -20,13 +20,11 @@ class Vue {
         this.initRestartButton(document); 
     }
 
-    initControl(document)
-    {
+    initControl(document) {
         document.addEventListener('keydown', (event) => {
             if (event.key === 'ArrowLeft') {
                 this.plateauJeu.deplacerBloc('gauche');               
             } else if (event.key === 'ArrowRight') {
-                console.log(this.plateauJeu)
                 this.plateauJeu.deplacerBloc('droite');
             } else if (event.key === 'ArrowDown') {
                 this.plateauJeu.deplacerBloc('bas');
@@ -37,8 +35,7 @@ class Vue {
         });
     }
 
-    refresh()
-    {
+    refresh() {
         this.displayGrid();
         this.displayTas();
         this.displayBloquesTombe();
@@ -52,12 +49,10 @@ class Vue {
         this.ctx.fillRect(0, 0, this.myCanva.width, this.myCanva.height);
         this.ctx.fillStyle = 'black';
         this.ctx.fillRect(0, 0, this.width, this.height);
-        this.ctx.strokeStyle = '#555555';
+        this.ctx.strokeStyle = '#5c6b73';
 
-        //this.ctx.strokeRect(50,50,100,200);
         for (let i = 0; i < this.plateauJeu.hauteur; i++) {
             for (let j = 0; j < this.plateauJeu.largeur; j++) {
-
                 this.ctx.strokeRect(j * this.tailleCarreau, i * this.tailleCarreau, this.tailleCarreau, this.tailleCarreau); 
             }
         }
@@ -66,12 +61,10 @@ class Vue {
     displayTas() {
         for (let i = 0; i < this.plateauJeu.hauteur; i++) {
             for (let j = 0; j < this.plateauJeu.largeur; j++) {
-
                 this.ctx.fillStyle = this.plateauJeu.tas[i][j]; 
                 this.ctx.fillRect(j * this.tailleCarreau +1, i * this.tailleCarreau +1, this.tailleCarreau -2, this.tailleCarreau -2); 
             }
         }
-        //console.table(this.plateauJeu.tas); 
     }
 
     displayBloquesTombe()
@@ -98,12 +91,7 @@ class Vue {
             }
     }
 
-    /**
-     * Mettre en pause le jeu 
-     * ou le relancer
-     */
     initPauseButton(document) {
-
         const pauseButton = document.getElementById("pauseButton");
 
         pauseButton.addEventListener('click', () => {
@@ -117,11 +105,7 @@ class Vue {
         });
     }
 
-    /**
-     * Rejouer  
-     */
     initRestartButton(document) {
-
         const restartButton = document.getElementById("restartButton");
 
         restartButton.addEventListener('click', () => {

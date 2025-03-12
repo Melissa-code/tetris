@@ -1,24 +1,60 @@
 body {
     font-family: "Space Mono", monospace;
-    font-weight: 700;
-    font-style: normal;
-    font-size: 18px;
-    background-color: #39393a;
+    font-weight: 500;
+    font-size: 15px;
+    background-color: #0c0f0a; 
     color: white;
-    height: 100vh;
     height: 100vh;
     display: flex;
     justify-content: center;
     align-items: center;
     margin: 0;
+    padding: 0;
 }
 
 h1 {
     text-align: center;
+    font-weight: 700;
+    margin: 10px 0;
 }
 
 .container {
     text-align: center;
+}
+
+#myCanvas {
+    border: 1px, solid #5c6b73; 
+}
+
+#pauseButton, #restartButton {
+    padding: 5px;
+    width: 100px;
+    margin: 10px ;
+    font-family: "Space Mono", monospace;
+    font-weight: bolder;
+    cursor: pointer;
+}
+
+#pauseButton:hover, #restartButton:hover  {
+    background-color: #e0fbfc;
+    border: 1px solid  #e0fbfc;
+    border-radius: 2px;
+}
+
+#score {
+    width: 150px;
+    border: 1px solid #5c6b73; 
+    border-radius: 3px;
+    padding: 5px;
+    margin: 10px;
+    font-weight: 500;
+}
+
+#header {
+    display: flex; 
+    justify-content: center;
+    align-items: center;
+    margin: 15px 0;
 }
 
 .tetris-grid {

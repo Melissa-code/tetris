@@ -1,85 +1,42 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&family=Space+Mono:ital,wght@0,400;0,700;1,400;1,700&family=VT323&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
     <title>Tetris</title>
 </head>
+
 <body>
     <div class="container">
         <div class="message"></div>
+        <!-- Title -->
         <div class="title">
             <h1>TETRIS</h1>
         </div>
+        <!-- Game -->
         <div id="game">
-            <button id="pauseButton">Pause</button>
-            <button id="restartButton">Rejouer</button>
-
-            <div id="score">Score: 0</div>
-
-            <canvas id="myCanvas" width="400" height="400" style="border:1px solid #000000;"></canvas>
+            <div id="header">
+                <!-- Buttons -->
+                <button id="pauseButton">Pause</button>
+                <button id="restartButton">Rejouer</button>
+                <!-- Score -->
+                <div id="score">Score: 0</div>
+            </div>
+            <!-- Grid -->
+            <canvas id="myCanvas" width="400" height="400"></canvas>
             <div id="grid"></div>
-
         </div>
     </div>
 
     <script src="model.js"></script>
     <script src="vue.js"></script>
-
     <script>
-        
-      
-        let plateauJeu = new PlateauJeu(10, 20); //constructor(largeur, hauteur)
-        let vue = new Vue(plateauJeu, document, 30); //constructor(plateauJeu, myCanva, tailleCarreau)
-
-  
-/*
-        // TESTS DE COLLISION EN CONSOLE 
-
-        // Test collision: bloc sort à gauche 
-        let fabrique = new Fabrique();
-        let blocSortAGauche = new Bloc(fabrique.randomForm(), couleurs.YELLOW, -1, 5);
-        let collisionGauche = plateauJeu.detecterCollision(blocSortAGauche);
-        console.log(collisionGauche == true ? "collision bord gauche!" : "Pas de collision !");
-
-        // Test collision: bloc sort à droite
-        let blocSortADroite = new Bloc(fabrique.randomForm(), couleurs.GREEN, 9, 5);
-        let collisionDroite = plateauJeu.detecterCollision(blocSortADroite);
-        console.log(collisionDroite == true ? "collision bord droit!" : "Pas de collision !");
-
-        // Test collision: bloc sort en bas 
-        let blocSortEnBas = new Bloc(fabrique.randomForm(), couleurs.PINK, 4, 19);
-        let collisionBas = plateauJeu.detecterCollision(blocSortEnBas);
-        console.log(collisionBas == true ? "collision bord bas!" : "Pas de collision !");
- 
-        // Test collision: bloc sort en haut 
-        let blocSortEnHaut = new Bloc(fabrique.randomForm(), couleurs.PURPLE, 4, -1);
-        let collisionHaut = plateauJeu.detecterCollision(blocSortEnHaut);
-        console.log(collisionHaut == true ? "collision bord haut!" : "Pas de collision !");
-
-        // Test collision sur bloc rouge dans tas 
-        // this.tas[5][6] = couleurs['RED']; // y x
-        //blocCollisionBlocRouge = new Bloc(fabrique.randomForm(), couleurs.YELLOW, 6, 5); // x y
-        blocCollisionBlocRouge = new Bloc([[1, 1], [1, 0]], couleurs.YELLOW, 6, 4); 
-        collisionBlocRouge = plateauJeu.detecterCollision(blocCollisionBlocRouge);
-        console.log(collisionBlocRouge == true ? "collision avec bloc rouge" : "Pas de collision !");
-
-        // Test collision sur bloc pink dans tas 
-        // this.tas[1][6] = couleurs['PINK'];
-        //blocCollisionBlocRose = new Bloc(fabrique.randomForm(), couleurs.YELLOW, 6, 1);
-        blocCollisionBlocRose = new Bloc([[1, 1], [1, 1]], couleurs.YELLOW, 6, 0);
-        collisionBlocRose = plateauJeu.detecterCollision(blocCollisionBlocRose);
-        console.log(collisionBlocRose == true ? "collision avec bloc rose" : "Pas de collision !");
-
-        //sans collision
-        blocCollisionZero = new Bloc([[1, 1], [1, 1]], couleurs.YELLOW, 8, 8);
-        collisionZero = plateauJeu.detecterCollision(blocCollisionZero);
-        console.log(collisionZero == true ? "collision " : "Pas de collision !");
-
-    */
-
-
-
+        let plateauJeu = new PlateauJeu(10, 20); //largeur, hauteur
+        let vue = new Vue(plateauJeu, document, 30); //plateauJeu, myCanva, tailleCarreau
     </script>
 </body>
 </html>
