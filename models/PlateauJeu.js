@@ -27,8 +27,7 @@ class PlateauJeu {
     const couleursTab = Object.values(couleurs); 
     const couleurAleatoire = couleursTab[Math.floor(Math.random() * (couleursTab.length -1))];
 
-    // Bloc constructor(forme, couleur, x, y) {}
-    // bloc aléatoire à placer dans le tas
+    // bloc aléatoire à placer dans le tas (forme, couleur, x, y)
     this.fabrique = new Fabrique();
     this.blocQuiTombent = new Bloc(
       this.fabrique.randomForm(),
@@ -103,10 +102,6 @@ class PlateauJeu {
   }
 
   deplacerBloc(deplacementFleche) {
-    // modifier la position et la forme du bloc selon l'action
-    // dans la limite du correct
-    // action : gauche, droite, bas, rotation, rotation inverse
-    // faire notre propre fonction de clonage (pour avoir les methodes en clone)
     let bloc = this.blocQuiTombent.clone();
 
     switch (deplacementFleche) {
