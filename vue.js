@@ -38,7 +38,7 @@ class Vue {
     refresh() {
         this.displayGrid();
         this.displayTas();
-        this.displayBloquesTombe();
+        this.displayBloquesTombent();
         this.displayBloqueEnRoute();
         this.updateScore();
         setTimeout(()=>this.refresh(), 200);
@@ -67,9 +67,9 @@ class Vue {
         }
     }
 
-    displayBloquesTombe()
+    displayBloquesTombent()
     {
-        let bloc = this.plateauJeu.blocQuiTombent;
+        let bloc = this.plateauJeu.blocsQuiTombent;
         for (let i = 0; i < bloc.forme.length; i++)
             for (let j = 0; j < bloc.forme[i].length; j++) {
               if (bloc.forme[i][j] == 1) {

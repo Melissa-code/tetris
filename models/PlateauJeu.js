@@ -7,7 +7,7 @@ class PlateauJeu {
   constructor(largeur, hauteur) {
     this.largeur = largeur;
     this.hauteur = hauteur;
-    this.blocQuiTombent = null;
+    this.blocsQuiTombent = null;
     this.tas = [];
     this.vitesse = 1000;
     this.finJeu = false; 
@@ -29,7 +29,7 @@ class PlateauJeu {
 
     // bloc aléatoire à placer dans le tas (forme, couleur, x, y)
     this.fabrique = new Fabrique();
-    this.blocQuiTombent = new Bloc(
+    this.blocsQuiTombent = new Bloc(
       this.fabrique.randomForm(),
       couleurAleatoire,
       0,
@@ -102,7 +102,7 @@ class PlateauJeu {
   }
 
   deplacerBloc(deplacementFleche) {
-    let bloc = this.blocQuiTombent.clone();
+    let bloc = this.blocsQuiTombent.clone();
 
     switch (deplacementFleche) {
       case "gauche":
@@ -129,7 +129,7 @@ class PlateauJeu {
     }
 
     if (!this.detecterCollision(bloc)) {
-      this.blocQuiTombent = bloc.clone();
+      this.blocsQuiTombent = bloc.clone();
       return true;
       //tester si collision
     } else {
@@ -174,12 +174,12 @@ class PlateauJeu {
     if(this.finJeu || this.isPaused) return;
 
     if (this.deplacerBloc('bas') == false) {
-      this.placerBlocDansTas(this.blocQuiTombent);
+      this.placerBlocDansTas(this.blocsQuiTombent);
 
       const couleursTab = Object.values(couleurs); 
       const couleurAleatoire = couleursTab[Math.floor(Math.random() * (couleursTab.length-1))];
 
-      this.blocQuiTombent = this.blocEnRoute;
+      this.blocsQuiTombent = this.blocEnRoute;
       this.blocEnRoute = new Bloc(
         this.fabrique.randomForm(),
         couleurAleatoire, 
@@ -187,7 +187,7 @@ class PlateauJeu {
         0
       );
 
-      if (this.detecterCollision(this.blocQuiTombent)) {
+      if (this.detecterCollision(this.blocsQuiTombent)) {
         this.finDuJeu(); 
       }
     }
@@ -205,7 +205,7 @@ class PlateauJeu {
 
   finDuJeu() {
     this.finJeu = true;
-    alert('Vous avez perdu.');
+    alert('Vous avez perdu😵😵😵!');
   }
 
   pauseJeu() {
@@ -235,7 +235,7 @@ class PlateauJeu {
     const couleurAleatoire = couleursTab[Math.floor(Math.random() * couleursTab.length)];
 
     this.fabrique = new Fabrique();  
-    this.blocQuiTombent = new Bloc(
+    this.blocsQuiTombent = new Bloc(
       this.fabrique.randomForm(),
       couleurAleatoire,
       0,
