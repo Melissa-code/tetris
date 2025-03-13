@@ -30,7 +30,6 @@ h1 {
 }
 
 #pauseButton, #restartButton {
-    all: unset;
     -webkit-tap-highlight-color: transparent;  
     -webkit-appearance: none;                  
     appearance: none;  
@@ -62,7 +61,7 @@ h1 {
     display: flex; 
     justify-content: center;
     align-items: center;
-    margin: 15px 0;
+    margin: 15px 5px;
 }
 
 #game {
