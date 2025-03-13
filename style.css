@@ -30,6 +30,11 @@ h1 {
 }
 
 #pauseButton, #restartButton {
+    all: unset;
+    -webkit-tap-highlight-color: transparent;  
+    -webkit-appearance: none;                  
+    appearance: none;  
+    color:#0c0f0a;
     padding: 5px;
     width: 100px;
     margin: 10px;
