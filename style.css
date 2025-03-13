@@ -29,10 +29,7 @@ h1 {
     height: auto; 
 }
 
-#pauseButton, #restartButton {
-    -webkit-tap-highlight-color: transparent;  
-    -webkit-appearance: none;                  
-    appearance: none;  
+#pauseButton, #restartButton { 
     color:#0c0f0a;
     padding: 5px;
     width: 100px;
@@ -55,6 +52,7 @@ h1 {
     padding: 5px;
     margin: 10px;
     font-weight: 500;
+    font-size: 15px;
 }
 
 #header {
@@ -81,6 +79,9 @@ h1 {
 
 @media screen and (max-width: 700px) {
     #pauseButton, #restartButton {
+        -webkit-tap-highlight-color: transparent;  
+        -webkit-appearance: none;                  
+        appearance: none; 
         margin: 5px;
         width: 90px;
     } 
