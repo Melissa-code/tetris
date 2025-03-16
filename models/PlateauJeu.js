@@ -23,7 +23,7 @@ class PlateauJeu {
       }
       this.tas.push(rowTas);
     }
-    //console.table(this.tas);
+    
     const couleursTab = Object.values(couleurs); 
     const couleurAleatoire = couleursTab[Math.floor(Math.random() * (couleursTab.length -1))];
 
@@ -133,7 +133,6 @@ class PlateauJeu {
       return true;
       //tester si collision
     } else {
-      //console.log("Il y a collision !");
       return false;
     }
   }
